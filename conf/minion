@@ -1,0 +1,11 @@
+master: 127.0.0.1
+id: silver
+
+beacons:
+  inotify:
+    /var/faas:
+      mask:
+        - create
+        - close_write
+      recurse: True
+      auto_add: True
