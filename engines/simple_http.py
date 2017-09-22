@@ -54,11 +54,6 @@ def start():
         #@tornado.gen.coroutine
         @tornado.web.asynchronous
         def post(self):
-            #Optional event firing for more integration
-        #    yield event_bus.fire_event({'headers': str(self.request.headers),
-        #                                'body': json.loads(self.request.body)},
-        #                                '/salt/engines/http',
-         #                               ret_future=True)
             log.info(json.loads(self.request.body))
             g = __runners__['lambda_events.giphyget'](json.loads(self.request.body)['giphy_request'])
             self.write(g['url'])
@@ -66,14 +61,6 @@ def start():
 
 
     log.info('Starting simple HTTP engine event service!')
-#    if __opts__['__role'] == 'master':
-#        log.info('Starting master event bus')
-#        event_bus = salt.utils.event.get_master_event(
-#                __opts__,
-#                __opts__['sock_dir'],
-#                listen=True)
-#    else:
-
     log.info('Simple HTTP engine event service started!')
 
     log.info('Starting simple HTTP engine webserver!')
