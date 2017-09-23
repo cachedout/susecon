@@ -27,7 +27,7 @@ while True:
             try:
                 with open(fn_, 'rb') as fh_:
                     manifest_data = yaml.load(fh_)
-                    fn_.close()
+                    fh_.close()
             except Exception as exc:
                 log.error('This demo is going quite badly. {0}'.format(exc))
 
