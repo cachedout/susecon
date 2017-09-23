@@ -30,7 +30,7 @@ def start():
     class IndexHandler(tornado.web.RequestHandler):
         SUPPORTED_METHODS = ("CONNECT", "GET", "HEAD", "POST", "DELETE", "PATCH", "PUT", "OPTIONS")
 	def set_default_headers(self):
-	    log.info("setting headers!!!")
+	    log.info("Setting headers")
 	    self.set_header("Access-Control-Allow-Origin", "*")
 	    self.set_header("Access-Control-Allow-Headers", "x-requested-with, Content-Type")
 	    self.set_header('Access-Control-Allow-Methods', 'POST, GET, OPTIONS')
@@ -46,7 +46,11 @@ def start():
                                         'body': json.loads(self.request.body)},
                                         '/salt/engines/http',
                                         ret_future=True)
-            g = __runners__['lambda_events.giphyget'](json.loads(self.request.body)['giphy_request'])
+            manifest_pillar = __runners__['pillar.show_pillar']()
+            #g = __runners__['lambda_events.giphyget'](json.loads(self.request.body)['giphy_request'])
+            g = __runners__['lambda_events.http_keyword_ingress'](json.loads(self.request.body)['giphy_request'],
+                    manifest_pillar['lang'],
+                    '/code/' + manifest_pillar['lang'])
 
             self.write(g['url'])
             self.finish()

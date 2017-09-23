@@ -40,18 +40,18 @@ def _get_lambda_host():
     return random.choice(lambdahosts)
 
 
-def giphyget(keyword):
+def http_keyword_ingress(http_keyword, func_to_run, lang='python'):
 
     lambdahost = _get_lambda_host()
     args = []
     salt_cmd = 'cmd.run'
-    args.append('docker run -v /code:/code saltme/lambda:v2 python /code/giphyget.py {0}'.format(keyword))
+    args.append('docker run -v /code:/code saltme/lambda:v2 {lang} {func_to_run} {http_keyword}'.format(http_keyword=http_keyword, lang=lang, func_to_run=func_to_run))
     local = salt.client.get_local_client(__opts__['conf_file'])
 
     cmdret = local.cmd('{0}'.format(lambdahost), salt_cmd, args)
     ret = {
         "lambdahost": lambdahost,
-        "keyword": keyword,
+        "keyword": http_keyword,
         "url": cmdret[lambdahost]
     }
 
