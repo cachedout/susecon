@@ -20,30 +20,31 @@ log = logging.getLogger(__name__)
 MANIFEST_DIR = '/code'
 DEMO_PILLAR = '/Users/mikeplace/devel/susecon/pillar/suseconf.sls'
 
-while True:
-    # Start looking in the manifest directory for manifests
-    for fn_ in glob.glob(MANIFEST_DIR + '/*'):
-        if os.path.split(fn_)[-1]  == 'manifest.yml':
-            try:
-                with open(fn_, 'rb') as fh_:
-                    manifest_data = yaml.load(fh_)
-                    fh_.close()
-            except Exception as exc:
-                log.error('This demo is going quite badly. {0}'.format(exc))
+def start():
+    while True:
+        # Start looking in the manifest directory for manifests
+        for fn_ in glob.glob(MANIFEST_DIR + '/*'):
+            if os.path.split(fn_)[-1]  == 'manifest.yml':
+                try:
+                    with open(fn_, 'rb') as fh_:
+                        manifest_data = yaml.load(fh_)
+                        fh_.close()
+                except Exception as exc:
+                    log.error('This demo is going quite badly. {0}'.format(exc))
 
-            for faas_func in manifest_data:
-                # Ensure that pillar data is set
-                
-                # Get current pillar data if it exists
-                # TODO hardcoded for demo
-                with open(DEMO_PILLAR, 'w+') as fh_:
-                    pillar_data = yaml.load(fh_)
-                    for faas_func in manifest_data:
-                        if not pillar_data or faas_func not in pillar_data:
-                            fh_.write(salt.serializers.yaml.serialize(manifest_data[faas_func]))
-                        
+                for faas_func in manifest_data:
+                    # Ensure that pillar data is set
+                    
+                    # Get current pillar data if it exists
+                    # TODO hardcoded for demo
+                    with open(DEMO_PILLAR, 'w+') as fh_:
+                        pillar_data = yaml.load(fh_)
+                        for faas_func in manifest_data:
+                            if not pillar_data or faas_func not in pillar_data:
+                                fh_.write(salt.serializers.yaml.serialize(manifest_data[faas_func]))
+                            
 
 
 
-    # Hang out and check back every so often
-    time.sleep(1)
+        # Hang out and check back every so often
+        time.sleep(1)

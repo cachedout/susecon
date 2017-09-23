@@ -49,8 +49,8 @@ def start():
             manifest_pillar = __runners__['pillar.show_pillar']()
             #g = __runners__['lambda_events.giphyget'](json.loads(self.request.body)['giphy_request'])
             g = __runners__['lambda_events.http_keyword_ingress'](json.loads(self.request.body)['giphy_request'],
-                    manifest_pillar['lang'],
-                    '/code/' + manifest_pillar['lang'])
+                    '/code/' + manifest_pillar['handler'],
+                    manifest_pillar['lang'])
 
             self.write(g['url'])
             self.finish()
@@ -59,7 +59,11 @@ def start():
         @tornado.web.asynchronous
         def post(self):
             log.info(json.loads(self.request.body))
-            g = __runners__['lambda_events.giphyget'](json.loads(self.request.body)['giphy_request'])
+            #g = __runners__['lambda_events.giphyget'](json.loads(self.request.body)['giphy_request'])
+            manifest_pillar = __runners__['pillar.show_pillar']()
+            g = __runners__['lambda_events.http_keyword_ingress'](json.loads(self.request.body)['giphy_request'],
+                    '/code/' + manifest_pillar['handler'],
+                    manifest_pillar['lang'])
             self.write(g['url'])
             self.finish()
 
