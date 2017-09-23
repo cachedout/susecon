@@ -3,7 +3,7 @@
 include:
   - docker
 
-"Download corp image":
+"Download container runtime":
   dockerng.image_present:
     - name: 'saltme/lambda:v2'
     - require:
