@@ -1,0 +1,17 @@
+# SUSEconf demo configuration
+engines:
+  - simple_http
+  - config_builder
+engines_dirs: 
+  - /Users/mikeplace/devel/susecon/engines
+
+file_roots:
+  base:
+    - /Users/mikeplace/devel/susecon/salt
+
+runner_dirs:
+  - /Users/mikeplace/devel/susecon/runners
+
+pillar_roots:
+  base:
+    - /Users/mikeplace/devel/susecon/pillar
